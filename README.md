@@ -5,10 +5,12 @@ this repo is a test for making a serverless api with lambda dynamoDB and SQS in 
 ## Requirements
 You need a version of node and npm to be able to install serverless framework.
 
-### install node
+### Install node and npm
 
-sudo apt-get install node
+``` sudo apt-get install node ```
 
-### install serverless framework
+ ```sudo apt-get install npm  ```
 
-npm install -g serverless
+### Install serverless framework
+
+``` npm install -g serverless ```
