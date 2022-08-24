@@ -2,7 +2,7 @@
 service: serverless-api
 # app and org for use with dashboard.serverless.com
 app: serverless-api
-org: sebasdf11
+org: #your organization
 
 frameworkVersion: '3'
 
