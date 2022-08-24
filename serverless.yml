@@ -1,0 +1,24 @@
+
+service: serverless-api
+# app and org for use with dashboard.serverless.com
+app: serverless-api
+org: #change it for your org 
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: us-east-1 #change it for your aws region
+  enviorment:
+    REGION: ${self:provider.region}
+
+functions:
+  post-users:
+    handler: handler.post_users
+    events:
+    - http:
+        method: post
+        path: users
+
+
