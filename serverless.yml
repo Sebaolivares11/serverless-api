@@ -2,7 +2,7 @@
 service: serverless-api
 # app and org for use with dashboard.serverless.com
 app: serverless-api
-org: #change it for your org 
+org: sebasdf11
 
 frameworkVersion: '3'
 
@@ -14,11 +14,17 @@ provider:
     REGION: ${self:provider.region}
 
 functions:
-  post-users:
-    handler: handler.post_users
+  manage-request:
+    handler: handler.manage_request
+    description: function that manages the http request from the api
     events:
-    - http:
-        method: post
-        path: users
-
+      - http:
+          method: post
+          path: users
+      - http:
+          method: get
+          path: users
+      - http:
+          method: patch
+          path: users
 
