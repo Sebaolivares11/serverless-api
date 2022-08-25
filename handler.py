@@ -24,18 +24,28 @@ usersPath = '/users'
 def manage_request(event, context):
     logger.info(event['Records'])
     method = event['Records'][0]['body']
-    if method == 'POST':
+    if method == postMethod:
         #crear un usuario en la cola
         eventAtributes = event['Records'][0]['messageAttributes']
         parsedData = parseQueue(eventAtributes, method)
         response = saveUser(parsedData)
+    elif method == patchMethod:
+        #modify an existing user 
+        eventAtributes = event['Records'][0]['messageAttributes']
+        parsedData = parseQueue(eventAtributes, method)
+        response = modifyUser(parsedData[0],parsedData[1],parsedData[2])
     else:
         response = buildResponse(404, 'Not Found')
     return response
 
 def parseQueue(messageAtributtes, method):
-    if method == 'POST':
+    if method == postMethod:
         formated = messageAtributtes['username']['stringValue']
+    elif method == patchMethod:
+        updateKey = messageAtributtes['updateKey']['stringValue']
+        updateValue = messageAtributtes['updateValue']['stringValue']
+        userId = messageAtributtes['id']['stringValue']
+        formated = [userId, updateKey, updateValue]
     return formated
 
 def saveUser(requestBody):
