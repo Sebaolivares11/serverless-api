@@ -1,10 +1,11 @@
 import json
-import boto3
 import logging
-import os
 import uuid
 
+import boto3
+
 from custom_encoder import CustomEncoder
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -38,6 +39,13 @@ def manage_request(event, context):
 
 
 def saveUser(requestBody):
+    """ function that saves a new user in the dynamo table db
+    Args:
+        requestBody (string): username at least for now for the new user
+
+    Returns:
+        httpResponse
+    """
     try:
         key = uuid.uuid4().hex
         table.put_item(
@@ -56,6 +64,15 @@ def saveUser(requestBody):
 
 
 def modifyUser(userId, updateKey, updateValue):
+    """ modify a username from a dynamo db table
+
+    Args:
+        userId (string): unique key from de db
+        updateKey (string): update key value to be updated
+        updateValue (string): value to change the curren username to
+    Returns:
+        httpResponse
+    """
     try:
         response = table.update_item(
             Key={ 'id': userId },
