@@ -10,21 +10,23 @@ provider:
   name: aws
   runtime: python3.8
   region: us-east-1 #change it for your aws region
-  enviorment:
-    REGION: ${self:provider.region}
 
 functions:
-  manage-request:
+  manager:
     handler: handler.manage_request
-    description: function that manages the http request from the api
+    description: function that manages the request from the current queue
     events:
-      - http:
-          method: post
-          path: users
-      - http:
-          method: get
-          path: users
-      - http:
-          method: patch
-          path: users
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - MyQueue
+              - Arn
+
+resources:
+  Resources:
+    MyQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "MyQueue"
+
 

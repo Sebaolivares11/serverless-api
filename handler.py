@@ -22,21 +22,21 @@ usersPath = '/users'
 
 
 def manage_request(event, context):
-    logger.info(event['body'])
-    httpmethod = event['httpMethod']
-    path = event['path']
-    if httpmethod == getMethod and path == usersPath:
-        response = buildResponse(200)
-    elif httpmethod == postMethod and path == usersPath:
-        requestBody = json.loads(event['body'])
-        response = saveUser(requestBody['username'])
-    elif httpmethod == patchMethod and path == usersPath:
-        requestBody = json.loads(event['body'])
-        response = modifyUser(requestBody['id'], requestBody['updateKey'], requestBody['updateValue'])
+    logger.info(event['Records'])
+    method = event['Records'][0]['body']
+    if method == 'POST':
+        #crear un usuario en la cola
+        eventAtributes = event['Records'][0]['messageAttributes']
+        parsedData = parseQueue(eventAtributes, method)
+        response = saveUser(parsedData)
     else:
         response = buildResponse(404, 'Not Found')
     return response
 
+def parseQueue(messageAtributtes, method):
+    if method == 'POST':
+        formated = messageAtributtes['username']['stringValue']
+    return formated
 
 def saveUser(requestBody):
     """ function that saves a new user in the dynamo table db
