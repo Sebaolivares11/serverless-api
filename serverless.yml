@@ -30,3 +30,6 @@ resources:
         QueueName: "MyQueue"
 
 
+
+plugins:
+  - serverless-lift
