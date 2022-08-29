@@ -19,15 +19,29 @@ functions:
       - sqs:
           arn:
             Fn::GetAtt:
-              - MyQueue
+              - MainQueue
               - Arn
+    deadLetter:
+      targetArn:
+        GetResourceArn: DLQueue
 
 resources:
   Resources:
-    MyQueue:
+    MainQueue:
       Type: "AWS::SQS::Queue"
       Properties:
-        QueueName: "MyQueue"
+        QueueName: "MainQueue"
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+            - "DLQueue"
+            - "Arn"
+          maxReceiveCount: 5
+
+    DLQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: "DLQueue"
 
 
 
